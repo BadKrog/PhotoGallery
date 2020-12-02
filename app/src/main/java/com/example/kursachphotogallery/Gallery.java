@@ -16,6 +16,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
 public class Gallery extends AppCompatActivity {
 
     private static final int REQUST_CODE = 1;
@@ -34,7 +36,7 @@ public class Gallery extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-        Gallery.ImageGalleryAdapter adapter = new Gallery.ImageGalleryAdapter(this, Photo.getSpacePhotos());
+        Gallery.ImageGalleryAdapter adapter = new Gallery.ImageGalleryAdapter(this);
         recyclerView.setAdapter(adapter);
         Log.d("MyTag", "Адаптер присоединен");
 
@@ -59,22 +61,21 @@ public class Gallery extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ImageGalleryAdapter.MyViewHolder holder, int position) {
             Log.d("MyTag", "onBindViewHolder");
-            Photo spacePhoto = mPhotos[position];
+            String photo = photos.get(position);
             ImageView imageView = holder.mPhotoImageView;
 
             Glide.with(mContext)
-                    .load(spacePhoto.getUrl())
+                    .load(photo)
                     .placeholder(R.drawable.ic_cloud_off_red)
                     .error(R.drawable.picture)
                     .into(imageView);
 
-            Log.d("MyTag", "Он должен был вызваться"+spacePhoto.getUrl());
 
         }
 
         @Override
         public int getItemCount() {
-            return (mPhotos.length);
+            return (photos.size());
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -93,21 +94,21 @@ public class Gallery extends AppCompatActivity {
 
                 int position = getAdapterPosition();
                 if(position != RecyclerView.NO_POSITION) {
-                    Photo spacePhoto = mPhotos[position];
+                    String photo = photos.get(position);
 
                     Intent intent = new Intent(mContext, PhotoActivity.class);
-                    intent.putExtra(PhotoActivity.EXTRA_SPACE_PHOTO, spacePhoto);
+                    intent.putExtra(PhotoActivity.EXTRA_SPACE_PHOTO, photo);
                     startActivity(intent);
                 }
             }
         }
 
-        private Photo[] mPhotos;
+        private ArrayList<String> photos;
         private Context mContext;
 
-        public ImageGalleryAdapter(Context context, Photo[] spacePhotos) {
+        public ImageGalleryAdapter(Context context) {
             mContext = context;
-            mPhotos = spacePhotos;
+            photos = Photo.getImageList(context);
         }
     }
 }

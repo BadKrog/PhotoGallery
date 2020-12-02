@@ -30,11 +30,11 @@ public class PhotoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo);
 
         mImageView = (ImageView) findViewById(R.id.image2);
-        Photo Photo = getIntent().getParcelableExtra(EXTRA_SPACE_PHOTO);
+        String photo = getIntent().getStringExtra(EXTRA_SPACE_PHOTO);
 
-        assert Photo != null;
+
         Glide.with(this)
-                .load(Photo.getUrl())
+                .load(photo)
                 .asBitmap()
                 .error(R.drawable.ic_cloud_off_red)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
