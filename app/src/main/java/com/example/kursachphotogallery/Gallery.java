@@ -94,21 +94,26 @@ public class Gallery extends AppCompatActivity {
 
                 int position = getAdapterPosition();
                 if(position != RecyclerView.NO_POSITION) {
+
                     String photo = photos.get(position);
+                    String name = names.get(position);
 
                     Intent intent = new Intent(mContext, PhotoActivity.class);
-                    intent.putExtra(PhotoActivity.EXTRA_SPACE_PHOTO, photo);
+                    intent.putExtra(PhotoActivity.EXTRA_PHOTO, photo);
+                    intent.putExtra(PhotoActivity.EXTRA_NAME, name);
                     startActivity(intent);
                 }
             }
         }
 
         private ArrayList<String> photos;
+        private ArrayList<String> names;
         private Context mContext;
 
         public ImageGalleryAdapter(Context context) {
             mContext = context;
             photos = Photo.getImageList(context);
+            names = Photo.getImageName(context);
         }
     }
 }
